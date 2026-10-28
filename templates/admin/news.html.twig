@@ -1,0 +1,44 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Manage News{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <span class="current">News</span>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <h2>Manage News</h2>
+    <a href="/admin/news/new" class="btn btn-primary">Add Article</a>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.is_active ? 'Active' : 'Inactive' }}</td>
+                <td>{{ article.created_at|date('M d, Y') }}</td>
+                <td>
+                    <a href="/admin/news/{{ article.id }}/edit" class="btn btn-small">Edit</a>
+                    <a href="/admin/news/{{ article.id }}/toggle" class="btn btn-small">
+                        {{ article.is_active ? 'Deactivate' : 'Activate' }}
+                    </a>
+                    <a href="/admin/news/{{ article.id }}/delete" class="btn btn-small btn-danger" onclick="return confirm('Delete this article?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

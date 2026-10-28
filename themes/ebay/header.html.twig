@@ -1,0 +1,59 @@
+<header class="site-header">
+    <div class="container">
+        <div class="header-inner">
+            <a href="/" class="site-logo">
+                {% if theme_logo_svg %}
+                    {{ theme_logo_svg|raw }}
+                {% else %}
+                    <span class="site-logo-text">
+                        <span style="background:#003481;color:white;padding:2px 8px;border-radius:6px;margin-right:6px;">e</span>
+                        <span style="color:#0064D2;">{{ 'base.buy' | trans }}</span><span style="color:#E53238;">{{ 'base.sell' | trans }}</span>
+                    </span>
+                {% endif %}
+            </a>
+
+            <form action="/search" method="get" class="ebay-search-bar">
+                <input type="text" name="q" placeholder="{{ 'base.search_placeholder' | trans }}" value="{{ search_query ?? '' }}">
+                <select name="cat">
+                    <option value="">{{ 'base.all_categories' | trans }}</option>
+                    {% for cat in categories ?? [] %}
+                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">{{ 'base.search_btn' | trans }}</button>
+            </form>
+
+            <nav class="main-nav">
+                {% if is_logged_in %}
+                    <a href="/browse">{{ 'nav.browse' | trans }}</a>
+                    <a href="/messages/inbox" class="nav-messages">
+                        {{ 'nav.messages' | trans }}
+                        {% if unread_count > 0 %}
+                            <span class="badge">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                    <a href="/desktop">{{ 'nav.desktop' | trans }}</a>
+                    <a href="/profile/{{ user_id }}">{{ 'nav.profile' | trans }}</a>
+                    <a href="/logout">{{ 'nav.logout' | trans }}</a>
+                    {% if is_admin %}
+                        <a href="/admin" class="admin-link">{{ 'nav.admin' | trans }}</a>
+                    {% endif %}
+                {% else %}
+                    <a href="/login">{{ 'nav.login' | trans }}</a>
+                    <a href="/register" class="btn btn-accent btn-sm" style="color:white;">{{ 'auth.join_now' | trans }}</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+</header>
+
+<nav class="category-bar">
+    <div class="container">
+        <div class="category-bar-inner">
+            <a href="/browse" class="{{ current_route == '/browse' ? 'active' : '' }}">{{ 'base.breadcrumb_home' | trans }}</a>
+            {% for cat in categories ?? [] %}
+            <a href="/browse?cat={{ cat.id }}" class="{{ active_category == cat.id ? 'active' : '' }}">{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</nav>

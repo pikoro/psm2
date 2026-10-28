@@ -1,0 +1,42 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Sent Messages{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/messages/inbox">Messages</a>
+    <span class="current">Sent</span>
+{% endblock %}
+
+{% block content %}
+<div class="messages-page">
+    <h2>Sent Messages</h2>
+    {% if messages|length > 0 %}
+    <table class="messages-table">
+        <thead>
+            <tr>
+                <th>To</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <tr>
+                <td><a href="/profile/{{ msg.to_user_id }}">{{ msg.receiver_name }}</a></td>
+                <td><a href="/messages/{{ msg.id }}">{{ msg.subject|slice(0, 50) }}</a></td>
+                <td>{{ msg.created_at|date('M d, Y H:i') }}</td>
+                <td>
+                    <a href="/messages/{{ msg.id }}" class="btn btn-small">View</a>
+                    <a href="/messages/trash/{{ msg.id }}/sender" class="btn btn-small btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'base/pagination.html.twig' %}
+    {% else %}
+    <p class="no-results">You haven't sent any messages yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

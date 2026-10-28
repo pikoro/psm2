@@ -1,0 +1,22 @@
+{
+    "name": "eBay Classic",
+    "author": "PHPSwapMeet",
+    "version": "1.0.0",
+    "description": "Classic eBay-inspired theme with blue header, red accents, and trust badges.",
+    "colors": {
+        "primary": "#0064D2",
+        "secondary": "#FFFFFF",
+        "accent": "#E53238",
+        "text": "#333333",
+        "background": "#FFFFFF",
+        "header_bg": "#003481",
+        "header_text": "#FFFFFF",
+        "link": "#0064D2",
+        "link_hover": "#C60613",
+        "border": "#D6D6D6",
+        "success": "#86B817",
+        "warning": "#F5AF02",
+        "footer_bg": "#424448",
+        "footer_text": "#CCCCCC"
+    }
+}

@@ -1,0 +1,101 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ user.username }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">{{ user.username }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-header">
+        <h2>{{ user.username }}</h2>
+        <p class="profile-meta">
+            Member since {{ user.created_at|date('M d, Y') }}
+            | Rating:
+            {% for i in 1..5 %}
+                {% if i <= user.rating ? 1 : 0 %}
+                    <span class="star filled">&#9733;</span>
+                {% else %}
+                    <span class="star">&#9734;</span>
+                {% endif %}
+            {% endfor %}
+            ({{ user.rating }} / 5, {{ user.feedback_count }} feedbacks)
+        </p>
+        {% if user.bio %}
+            <p class="profile-bio">{{ user.bio }}</p>
+        {% endif %}
+        {% if is_logged_in and user_id != user.id %}
+            <a href="/messages/compose?to={{ user.id }}" class="btn btn-primary">Send Message</a>
+        {% endif %}
+    </div>
+
+    {% if is_logged_in and user_id != user.id %}
+    <div class="feedback-form">
+        <h3>Leave Feedback</h3>
+        <form method="POST" action="/profile/{{ user.id }}/feedback">
+            {{ csrf_token|raw }}
+            <div class="form-group">
+                <label>Rating:</label>
+                <div class="star-rating-input">
+                    {% for i in 1..5 %}
+                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}">
+                        <label for="star{{ i }}">&#9733;</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment (optional)</label>
+                <textarea id="comment" name="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary">Submit Feedback</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="profile-items">
+        <h3>Items by {{ user.username }}</h3>
+        {% if items|length > 0 %}
+        <div class="item-grid">
+            {% for item in items %}
+            <div class="item-card">
+                <a href="/items/{{ item.id }}">
+                    <div class="item-image">
+                        {% if item.main_photo %}
+                            <img src="/uploads/{{ item.main_photo }}" alt="{{ item.name }}" loading="lazy">
+                        {% else %}
+                            <div class="no-image">No Photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="item-info">
+                        <h3>{{ item.name|slice(0, 40) }}</h3>
+                        <p class="item-price">{{ item.price ? item.price ~ ' ' ~ item.currency : 'Free' }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% include 'base/pagination.html.twig' %}
+        {% else %}
+        <p class="no-results">No active items listed.</p>
+        {% endif %}
+    </div>
+
+    {% if feedbacks|length > 0 %}
+    <div class="profile-feedback">
+        <h3>Feedback Received</h3>
+        {% for fb in feedbacks %}
+        <div class="feedback-item">
+            <div class="feedback-rating">
+                {% for i in 1..5 %}
+                    {% if i <= fb.rating %}<span class="star filled">&#9733;</span>{% else %}<span class="star">&#9734;</span>{% endif %}
+                {% endfor %}
+            </div>
+            <p>{{ fb.comment ?? 'No comment' }}</p>
+            <small>From {{ fb.from_username }} on {{ fb.created_at|date('M d, Y') }}</small>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

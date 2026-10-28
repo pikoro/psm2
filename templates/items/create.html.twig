@@ -1,0 +1,60 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ 'items.list_new' | trans }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/browse">{{ 'nav.browse' | trans }}</a>
+    <span class="current">{{ 'items.list_new' | trans }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h2>{{ 'items.list_new' | trans }}</h2>
+    <form method="POST" action="/items/create" enctype="multipart/form-data" class="form">
+        {{ csrf_token|raw }}
+        <div class="form-group">
+            <label for="name">{{ 'items.item_name' | trans }}</label>
+            <input type="text" id="name" name="name" value="{{ old.name ?? '' }}" required maxlength="200">
+            {% if validation_errors.name %}<span class="error">{{ validation_errors.name }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="category_id">{{ 'items.category' | trans }}</label>
+            <select id="category_id" name="category_id" required>
+                <option value="">{{ 'items.select_category' | trans }}</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ old.category_id == cat.id ? 'selected' : '' }}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            {% if validation_errors.category_id %}<span class="error">{{ validation_errors.category_id }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="post_type">{{ 'items.post_type' | trans }}</label>
+            <select id="post_type" name="post_type" required>
+                <option value="offer" {{ old.post_type == 'offer' ? 'selected' : '' }}>{{ 'items.offer' | trans }}</option>
+                <option value="want" {{ old.post_type == 'want' ? 'selected' : '' }}>{{ 'items.want' | trans }}</option>
+            </select>
+            {% if validation_errors.post_type %}<span class="error">{{ validation_errors.post_type }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="price">{{ 'items.price' | trans }}</label>
+            <input type="text" id="price" name="price" value="{{ old.price ?? '' }}">
+        </div>
+        <div class="form-group">
+            <label for="currency">{{ 'items.currency' | trans }}</label>
+            <input type="text" id="currency" name="currency" value="{{ old.currency ?? 'USD' }}" maxlength="3">
+        </div>
+        <div class="form-group">
+            <label for="description">{{ 'items.description' | trans }}</label>
+            <textarea id="description" name="description" rows="6" required maxlength="5000">{{ old.description ?? '' }}</textarea>
+            <small class="char-counter" data-target="#description">5000</small>
+        </div>
+        <div class="form-group">
+            <label for="photos">{{ 'items.photos' | trans }}</label>
+            <input type="file" id="photos" name="photos[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
+            <small>{{ 'items.photos_help' | trans }}</small>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ 'items.submit_list' | trans }}</button>
+        <a href="/browse" class="btn btn-secondary">{{ 'profile.cancel' | trans }}</a>
+    </form>
+</div>
+{% endblock %}

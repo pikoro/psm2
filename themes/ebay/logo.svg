@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
+  <defs>
+    <linearGradient id="ebayBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0064D2"/>
+      <stop offset="100%" style="stop-color:#003481"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="46" height="46" rx="8" fill="url(#ebayBlue)" />
+  <text x="25" y="33" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF">e</text>
+  <text x="60" y="36" text-anchor="start" font-family="Arial, sans-serif" font-size="26" font-weight="bold">
+    <tspan fill="#0064D2">Buy</tspan>
+    <tspan fill="#E53238">Shop</tspan>
+    <tspan fill="#F5AF02">Sell</tspan>
+  </text>
+</svg>

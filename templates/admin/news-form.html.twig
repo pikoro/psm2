@@ -1,0 +1,39 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ article ? 'Edit' : 'Add' }} News{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <a href="/admin/news">News</a>
+    <span class="current">{{ article ? 'Edit' : 'Add' }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h2>{{ article ? 'Edit Article' : 'Add New Article' }}</h2>
+    <form method="POST" action="/admin/news/save" class="form">
+        {{ csrf_token|raw }}
+        {% if article %}
+            <input type="hidden" name="id" value="{{ article.id }}">
+        {% endif %}
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="{{ article.title ?? '' }}" required maxlength="255">
+            {% if validation_errors.title %}<span class="error">{{ validation_errors.title }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="10" required>{{ article.content ?? (old.content ?? '') }}</textarea>
+            {% if validation_errors.content %}<span class="error">{{ validation_errors.content }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="is_active" value="1" {{ article and article.is_active ? 'checked' : 'checked' }}>
+                Active
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/admin/news" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

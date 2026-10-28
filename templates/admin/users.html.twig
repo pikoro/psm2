@@ -1,0 +1,44 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Manage Users{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <span class="current">Users</span>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <h2>Manage Users</h2>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><a href="/profile/{{ user.id }}">{{ user.username }}</a></td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.created_at|date('M d, Y') }}</td>
+                <td>{{ user.is_active ? 'Active' : 'Inactive' }}</td>
+                <td>
+                    <a href="/admin/users/{{ user.id }}/edit" class="btn btn-small btn-info">Edit</a>
+                    <a href="/admin/users/{{ user.id }}/toggle" class="btn btn-small">
+                        {{ user.is_active ? 'Deactivate' : 'Activate' }}
+                    </a>
+                    <a href="/admin/users/{{ user.id }}/delete" class="btn btn-small btn-danger" onclick="return confirm('Delete this user?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

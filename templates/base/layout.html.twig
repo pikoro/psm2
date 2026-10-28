@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="{{ theme_stylesheet_url }}">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% if theme_has_custom_header %}
+        {{ theme_custom_header|raw }}
+    {% else %}
+    <header class="site-header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="/" class="site-logo">
+                    {% if theme_logo_svg %}
+                        {{ theme_logo_svg|raw }}
+                    {% else %}
+                        <span class="site-logo-text">{{ app_name }}</span>
+                    {% endif %}
+                </a>
+                <nav class="main-nav">
+                    {% if is_logged_in %}
+                        <a href="/browse">Browse</a>
+                        <a href="/search">Search</a>
+                        <a href="/messages/inbox" class="nav-messages">
+                            Messages
+                            {% if unread_count > 0 %}
+                                <span class="badge">{{ unread_count }}</span>
+                            {% endif %}
+                        </a>
+                        <a href="/desktop">Desktop</a>
+                        <a href="/profile/{{ user_id }}">{{ username }}</a>
+                        <a href="/logout">Logout</a>
+                        {% if is_admin %}
+                            <a href="/admin" class="admin-link">Admin</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="/login">Login</a>
+                        <a href="/register">Register</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+    {% endif %}
+
+    <main class="site-main">
+        <div class="container">
+            {% include 'base/flash.html.twig' %}
+            {% include 'base/breadcrumb.html.twig' %}
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Language Selector -->
+    <div class="language-selector" style="position:fixed;bottom:10px;right:10px;z-index:1000;">
+        <select onchange="window.location.href='/language/switch?locale='+this.value" style="font-size:12px;padding:4px;border-radius:4px;border:1px solid #ccc;">
+            {% for code, name in supported_locales %}
+                <option value="{{ code }}" {{ current_locale == code ? 'selected' : '' }}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% if theme_has_custom_footer %}
+        {{ theme_custom_footer|raw }}
+    {% else %}
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; {{ 'now'|date('Y') }} {{ app_name }}. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="/">Home</a>
+                <a href="/browse">Browse</a>
+                <a href="/rss/items">RSS Feed</a>
+                <a href="/rss/news">News Feed</a>
+            </nav>
+        </div>
+    </footer>
+    {% endif %}
+
+    <script src="/assets/js/app.js"></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

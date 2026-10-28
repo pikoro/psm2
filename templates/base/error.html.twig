@@ -1,0 +1,9 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block content %}
+<div class="error-page">
+    <h1>{{ status ?? 500 }}</h1>
+    <p>{{ message ?? 'An error occurred.' }}</p>
+    <a href="/">Return Home</a>
+</div>
+{% endblock %}

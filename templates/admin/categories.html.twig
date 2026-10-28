@@ -1,0 +1,56 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Manage Categories{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <span class="current">Categories</span>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <h2>Manage Categories</h2>
+
+    <div class="add-category-form">
+        <h3>Add Category</h3>
+        <form method="POST" action="/admin/categories/add" class="form inline-form">
+            {{ csrf_token|raw }}
+            <input type="text" name="name" placeholder="Category name" required maxlength="100">
+            <input type="text" name="description" placeholder="Description">
+            <input type="number" name="sort_order" value="0" min="0">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Items</th>
+                <th>Order</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in categories %}
+            <tr>
+                <td>{{ cat.id }}</td>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.description ?? '' }}</td>
+                <td>{{ cat.item_count ?? 0 }}</td>
+                <td>{{ cat.sort_order }}</td>
+                <td>{{ cat.is_active ? 'Active' : 'Inactive' }}</td>
+                <td>
+                    <a href="/admin/categories/{{ cat.id }}/toggle" class="btn btn-small">
+                        {{ cat.is_active ? 'Deactivate' : 'Activate' }}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

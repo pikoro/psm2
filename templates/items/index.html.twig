@@ -1,0 +1,62 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Browse Items{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">Browse</span>
+{% endblock %}
+
+{% block content %}
+<div class="browse-page">
+    <h2>Browse Items</h2>
+
+    <form method="GET" action="/browse" class="filter-form">
+        <div class="filter-group">
+            <label for="category_id">Category</label>
+            <select id="category_id" name="category_id">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ filters.category_id == cat.id ? 'selected' : '' }}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="post_type">Type</label>
+            <select id="post_type" name="post_type">
+                <option value="">All Types</option>
+                <option value="offer" {{ filters.post_type == 'offer' ? 'selected' : '' }}>I Have (Offer)</option>
+                <option value="want" {{ filters.post_type == 'want' ? 'selected' : '' }}>I Want (Want)</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="/browse" class="btn btn-secondary">Clear</a>
+    </form>
+
+    {% if items|length > 0 %}
+    <div class="item-grid">
+        {% for item in items %}
+        <div class="item-card">
+            <a href="/items/{{ item.id }}">
+                <div class="item-image">
+                    {% if item.main_photo %}
+                        <img src="/uploads/{{ item.main_photo }}" alt="{{ item.name }}" loading="lazy">
+                    {% else %}
+                        <div class="no-image">No Photo</div>
+                    {% endif %}
+                </div>
+                <div class="item-info">
+                    <h3>{{ item.name|slice(0, 40) }}{% if item.name|length > 40 %}...{% endif %}</h3>
+                    <p class="item-price">{{ item.price ? item.price ~ ' ' ~ item.currency : 'Free' }}</p>
+                    <span class="item-category">{{ item.category_name ?? 'Uncategorized' }}</span>
+                    <span class="item-owner">by {{ item.owner_username }}</span>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% include 'base/pagination.html.twig' %}
+    {% else %}
+    <p class="no-results">No items found matching your criteria.</p>
+    {% endif %}
+</div>
+{% endblock %}

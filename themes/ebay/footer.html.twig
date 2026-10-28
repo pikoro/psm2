@@ -1,0 +1,46 @@
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <h4>{{ 'base.buy' | trans }}</h4>
+                <a href="/browse">{{ 'items.browse_items' | trans }}</a>
+                <a href="/search">{{ 'nav.search' | trans }}</a>
+                <a href="/register">{{ 'nav.register' | trans }}</a>
+            </div>
+            <div class="footer-col">
+                <h4>{{ 'base.sell' | trans }}</h4>
+                <a href="/items/create">{{ 'items.list_new' | trans }}</a>
+                <a href="/desktop">{{ 'nav.desktop' | trans }}</a>
+                <a href="/profile/{{ user_id ?? 0 }}">{{ 'profile.view_profile' | trans }}</a>
+            </div>
+            <div class="footer-col">
+                <h4>{{ 'base.community' | trans }}</h4>
+                <a href="/rss/items">{{ 'base.breadcrumb_rss' | trans }}</a>
+                <a href="/rss/news">{{ 'base.breadcrumb_rss' | trans }} {{ 'base.breadcrumb_news' | trans }}</a>
+                <a href="/contact">{{ 'base.contact' | trans }}</a>
+            </div>
+            <div class="footer-col">
+                <h4>{{ 'base.trust_safety' | trans }}</h4>
+                <a href="/terms">{{ 'base.terms' | trans }}</a>
+                <a href="/privacy">{{ 'base.privacy' | trans }}</a>
+                <a href="/faq">{{ 'base.faq' | trans }}</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-nav">
+                <a href="/">{{ 'base.breadcrumb_home' | trans }}</a>
+                <a href="/browse">{{ 'base.breadcrumb_browse' | trans }}</a>
+                <a href="/rss/items">{{ 'base.breadcrumb_rss' | trans }}</a>
+                <a href="/contact">{{ 'base.contact' | trans }}</a>
+            </div>
+            <div class="theme-switcher">
+                <span style="color:rgba(255,255,255,0.4);margin-right:8px;">{{ 'base.theme' | trans }}:</span>
+                {% for key, info in available_themes %}
+                    <a href="/theme/switch?theme={{ key }}" style="color:{{ key == theme_name ? '#F5AF02' : 'rgba(255,255,255,0.5)' }};margin:0 4px;text-decoration:none;font-size:11px;">{{ info.name }}</a>
+                    {% if not loop.last %}<span style="color:rgba(255,255,255,0.2);">|</span>{% endif %}
+                {% endfor %}
+            </div>
+            <p>&copy; {{ 'now'|date('Y') }} {{ app_name }}. {{ 'app.rights' | trans }}</p>
+        </div>
+    </div>
+</footer>

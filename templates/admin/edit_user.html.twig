@@ -1,0 +1,74 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Edit User #{{ user.id }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <a href="/admin/users">Users</a>
+    <span class="current">Edit #{{ user.id }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h2>Edit User #{{ user.id }} — {{ user.username }}</h2>
+    <form method="POST" action="/admin/users/{{ user.id }}/update" class="form">
+        {{ csrf_token|raw }}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ old.username ?? user.username }}" required maxlength="50">
+            {% if validation_errors.username %}<span class="error">{{ validation_errors.username }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ old.email ?? user.email }}" required>
+            {% if validation_errors.email %}<span class="error">{{ validation_errors.email }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" value="{{ old.first_name ?? user.first_name ?? '' }}" maxlength="100">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" value="{{ old.last_name ?? user.last_name ?? '' }}" maxlength="100">
+        </div>
+        <div class="form-group">
+            <label for="paypal_email">PayPal Email</label>
+            <input type="email" id="paypal_email" name="paypal_email" value="{{ old.paypal_email ?? user.paypal_email ?? '' }}">
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" name="bio" rows="4" maxlength="1000">{{ old.bio ?? user.bio ?? '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="language">Language</label>
+            <select id="language" name="language">
+                {% for code, name in supported_locales %}
+                    <option value="{{ code }}" {{ user.language == code ? 'selected' : '' }}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="password">New Password (leave blank to keep current)</label>
+            <input type="password" id="password" name="password" minlength="8">
+            <small>Must be at least 8 characters if set.</small>
+        </div>
+        <div class="form-group">
+            <label>Active Status</label>
+            <input type="hidden" name="is_active" value="0">
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_active" value="1" {{ user.is_active ? 'checked' : '' }}>
+                Active
+            </label>
+            <small>Uncheck to deactivate this user.</small>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_admin" value="1" {{ user.is_admin ? 'checked' : '' }}>
+                Admin
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/admin/users" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

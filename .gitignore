@@ -1,0 +1,7 @@
+/vendor/
+/.env
+/public/uploads/*
+!public/uploads/.gitkeep
+*.log
+/.phpunit.cache
+/node_modules/

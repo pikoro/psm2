@@ -1,0 +1,12 @@
+{% if flash is not empty %}
+<div class="flash-messages">
+    {% for type, message in flash %}
+        {% if message is not null %}
+        <div class="flash flash-{{ type }}" data-dismiss="flash">
+            {{ message }}
+            <button class="flash-close" aria-label="Close">&times;</button>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

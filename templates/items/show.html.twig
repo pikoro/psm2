@@ -1,0 +1,53 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ item.name }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/browse">Browse</a>
+    <span class="current">{{ item.name|slice(0, 30) }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="item-detail">
+    <div class="item-gallery">
+        {% if photos|length > 0 %}
+            <div class="gallery-main">
+                <img src="/uploads/{{ photos[0].file_name }}" alt="{{ item.name }}" id="gallery-main-img">
+            </div>
+            <div class="gallery-thumbs">
+                {% for photo in photos %}
+                <img src="/uploads/{{ photo.file_name }}" alt="{{ item.name }}" class="gallery-thumb" data-src="/uploads/{{ photo.file_name }}">
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-image-large">No Photo Available</div>
+        {% endif %}
+    </div>
+
+    <div class="item-details">
+        <h1>{{ item.name }}</h1>
+        <p class="item-price-large">{{ item.price ? item.price ~ ' ' ~ item.currency : 'Free' }}</p>
+        <p class="item-meta">
+            Listed by <a href="/profile/{{ item.owner_id }}">{{ item.owner_username }}</a>
+            | Category: <a href="/browse?category_id={{ item.category_id }}">{{ item.category_name ?? 'Uncategorized' }}</a>
+            | Listed: {{ item.created_at|date('M d, Y') }}
+        </p>
+        <div class="item-description">
+            {{ item.description|replace({'\n': '<br>'})|raw }}
+        </div>
+
+        {% if is_logged_in and is_logged_in %}
+        <div class="item-actions">
+            {% if is_logged_in and user_id == item.owner_id %}
+                <a href="/items/{{ item.id }}/edit" class="btn btn-secondary">Edit</a>
+                <a href="/items/{{ item.id }}/deactivate" class="btn btn-danger">Deactivate</a>
+            {% elseif is_logged_in and user_id != item.owner_id %}
+                <a href="/messages/compose?to={{ item.owner_id }}&item={{ item.id }}" class="btn btn-primary">Contact Seller</a>
+            {% endif %}
+        </div>
+        {% else %}
+        <p><a href="/login" class="btn btn-primary">Login to Contact</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

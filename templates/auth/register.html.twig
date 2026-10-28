@@ -1,0 +1,49 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ 'auth.register' | trans }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">{{ 'auth.register' | trans }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="auth-form">
+    <h2>{{ 'auth.create_account' | trans }}</h2>
+    <form method="POST" action="/register" class="form">
+        {{ csrf_token|raw }}
+        <div class="form-group">
+            <label for="username">{{ 'auth.username' | trans }}</label>
+            <input type="text" id="username" name="username" value="{{ old.username ?? '' }}" required minlength="3" maxlength="50">
+            {% if validation_errors.username %}
+                <span class="error">{{ validation_errors.username }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="email">{{ 'auth.email' | trans }}</label>
+            <input type="email" id="email" name="email" value="{{ old.email ?? '' }}" required>
+            {% if validation_errors.email %}
+                <span class="error">{{ validation_errors.email }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="password">{{ 'auth.password_min' | trans }}</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            {% if validation_errors.password %}
+                <span class="error">{{ validation_errors.password }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="password_confirm">{{ 'auth.password_confirm' | trans }}</label>
+            <input type="password" id="password_confirm" name="password_confirm" required minlength="8">
+            {% if validation_errors.password_confirm %}
+                <span class="error">{{ validation_errors.password_confirm }}</span>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">{{ 'auth.submit_register' | trans }}</button>
+    </form>
+    <div class="auth-links">
+        <span>{{ 'auth.already_have_account' | trans }}</span>
+        <a href="/login">{{ 'auth.login' | trans }}</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Trash{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/messages/inbox">Messages</a>
+    <span class="current">Trash</span>
+{% endblock %}
+
+{% block content %}
+<div class="messages-page">
+    <h2>Trash</h2>
+    <a href="/messages/empty-trash" class="btn btn-danger">Empty Trash</a>
+
+    {% if messages|length > 0 %}
+    <table class="messages-table">
+        <thead>
+            <tr>
+                <th>From</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <tr>
+                <td>{{ msg.sender_name }}</td>
+                <td>{{ msg.subject|slice(0, 50) }}</td>
+                <td>{{ msg.created_at|date('M d, Y H:i') }}</td>
+                <td>
+                    <a href="/messages/permanently-delete/{{ msg.id }}" class="btn btn-small btn-danger" onclick="return confirm('Permanently delete this message?')">Delete Forever</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'base/pagination.html.twig' %}
+    {% else %}
+    <p class="no-results">Trash is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

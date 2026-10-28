@@ -1,0 +1,22 @@
+{
+    "name": "Yahoo Auctions",
+    "author": "PHPSwapMeet",
+    "version": "1.0.0",
+    "description": "Yahoo Auctions-inspired theme with purple palette and Japanese auction aesthetics.",
+    "colors": {
+        "primary": "#635DC5",
+        "secondary": "#FFFFFF",
+        "accent": "#FF6633",
+        "text": "#333333",
+        "background": "#F7F5FA",
+        "header_bg": "#635DC5",
+        "header_text": "#FFFFFF",
+        "link": "#635DC5",
+        "link_hover": "#4439A5",
+        "border": "#E0DCEF",
+        "success": "#51CF66",
+        "warning": "#FFD43B",
+        "footer_bg": "#4A4590",
+        "footer_text": "#DDDAE8"
+    }
+}

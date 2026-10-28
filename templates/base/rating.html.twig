@@ -1,0 +1,9 @@
+{% macro rating_stars(rating, max = 5) %}
+    {% for i in 1..max %}
+        {% if i <= rating %}
+            <span class="star filled">&#9733;</span>
+        {% else %}
+            <span class="star">&#9734;</span>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

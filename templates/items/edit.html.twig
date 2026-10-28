@@ -1,0 +1,58 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Edit {{ item.name }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/browse">Browse</a>
+    <a href="/items/{{ item.id }}">{{ item.name|slice(0, 30) }}</a>
+    <span class="current">Edit</span>
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h2>Edit Item</h2>
+    <form method="POST" action="/items/{{ item.id }}/edit" enctype="multipart/form-data" class="form">
+        {{ csrf_token|raw }}
+        <div class="form-group">
+            <label for="name">Item Name</label>
+            <input type="text" id="name" name="name" value="{{ old.name ?? item.name }}" required maxlength="200">
+            {% if validation_errors.name %}<span class="error">{{ validation_errors.name }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="category_id">Category</label>
+            <select id="category_id" name="category_id" required>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ old.category_id ?? item.category_id == cat.id ? 'selected' : '' }}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            {% if validation_errors.category_id %}<span class="error">{{ validation_errors.category_id }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label for="post_type">Type</label>
+            <select id="post_type" name="post_type" required>
+                <option value="offer" {{ old.post_type ?? item.post_type == 'offer' ? 'selected' : '' }}>I Have (Offer)</option>
+                <option value="want" {{ old.post_type ?? item.post_type == 'want' ? 'selected' : '' }}>I Want (Want)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" value="{{ old.price ?? item.price ?? '' }}">
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" name="currency" value="{{ old.currency ?? item.currency ?? 'USD' }}" maxlength="3">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="6" required maxlength="5000">{{ old.description ?? item.description }}</textarea>
+            <small class="char-counter" data-target="#description">5000</small>
+        </div>
+        <div class="form-group">
+            <label for="photos">Add Photos (optional)</label>
+            <input type="file" id="photos" name="photos[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/items/{{ item.id }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

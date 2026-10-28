@@ -1,0 +1,97 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ 'admin.dashboard' | trans }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">{{ 'admin.dashboard' | trans }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <h2>{{ 'admin.dashboard' | trans }}</h2>
+    <nav class="admin-nav">
+        <a href="/admin">{{ 'admin.dashboard' | trans }}</a>
+        <a href="/admin/users">{{ 'admin.users' | trans }}</a>
+        <a href="/admin/categories">{{ 'admin.categories' | trans }}</a>
+        <a href="/admin/news">{{ 'admin.news' | trans }}</a>
+        <a href="/admin/stats">{{ 'admin.stats' | trans }}</a>
+    </nav>
+
+    <div class="admin-stats-grid">
+        <div class="stat-card">
+            <h3>{{ 'admin.total_users' | trans }}</h3>
+            <p class="stat-number">{{ total_users }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ 'admin.active_users' | trans }}</h3>
+            <p class="stat-number">{{ active_users }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ 'admin.total_items' | trans }}</h3>
+            <p class="stat-number">{{ total_items }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ 'admin.active_items' | trans }}</h3>
+            <p class="stat-number">{{ active_items }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ 'admin.total_feedback' | trans }}</h3>
+            <p class="stat-number">{{ total_feedback }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ 'admin.total_messages' | trans }}</h3>
+            <p class="stat-number">{{ total_messages }}</p>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h3>{{ 'admin.recent_users' | trans }}</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.username' | trans }}</th>
+                    <th>{{ 'admin.email' | trans }}</th>
+                    <th>{{ 'admin.registered' | trans }}</th>
+                    <th>{{ 'admin.status' | trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in recent_users %}
+                <tr>
+                    <td><a href="/profile/{{ u.id }}">{{ u.username }}</a></td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.created_at|date('M d, Y') }}</td>
+                    <td>{{ u.is_active ? 'admin.active' | trans : 'admin.inactive' | trans }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="admin-section">
+        <h3>{{ 'admin.recent_items' | trans }}</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'items.item_name' | trans }}</th>
+                    <th>{{ 'admin.owner' | trans }}</th>
+                    <th>{{ 'items.category' | trans }}</th>
+                    <th>{{ 'items.price' | trans }}</th>
+                    <th>{{ 'admin.listed' | trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_items %}
+                <tr>
+                    <td><a href="/items/{{ item.id }}">{{ item.name|slice(0, 30) }}</a></td>
+                    <td><a href="/profile/{{ item.owner_id }}">{{ item.owner_username }}</a></td>
+                    <td>{{ item.category_name ?? 'N/A' }}</td>
+                    <td>{{ item.price ? item.price ~ ' ' ~ item.currency : 'items.price_free' | trans }}</td>
+                    <td>{{ item.created_at|date('M d, Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

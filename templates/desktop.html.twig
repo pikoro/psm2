@@ -1,0 +1,59 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ 'desktop.title' | trans }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">{{ 'desktop.title' | trans }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="desktop-page">
+    <h2>{{ 'desktop.your_desktop' | trans }}</h2>
+
+    {% if unread_count > 0 %}
+        <p class="unread-count">{{ 'desktop.unread_messages' | trans }} {{ unread_count }} {{ 'desktop.unread_message_plural' | trans }}. <a href="/messages/inbox">{{ 'desktop.view_messages' | trans }}</a>.</p>
+    {% endif %}
+
+    <div class="desktop-actions">
+        <a href="/items/create" class="btn btn-primary">{{ 'desktop.list_item' | trans }}</a>
+        <a href="/messages/compose" class="btn btn-secondary">{{ 'desktop.compose_msg' | trans }}</a>
+        <a href="/profile/{{ user_id }}" class="btn btn-secondary">{{ 'profile.view_profile' | trans }}</a>
+        <a href="/profile/edit" class="btn btn-secondary">{{ 'profile.edit' | trans }}</a>
+    </div>
+
+    <div class="desktop-section">
+        <h3>{{ 'desktop.my_items' | trans }}</h3>
+        {% if items|length > 0 %}
+        <div class="item-grid">
+            {% for item in items %}
+            <div class="item-card">
+                <a href="/items/{{ item.id }}">
+                    <div class="item-image">
+                        {% if item.main_photo %}
+                            <img src="/uploads/{{ item.main_photo }}" alt="{{ item.name }}" loading="lazy">
+                        {% else %}
+                            <div class="no-image">{{ 'desktop.no_photos' | trans }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="item-info">
+                        <h3>{{ item.name|slice(0, 40) }}{% if item.name|length > 40 %}...{% endif %}</h3>
+                        <p class="item-price">{{ item.price ? item.price ~ ' ' ~ item.currency : 'items.price_free' | trans }}</p>
+                        <span class="item-status">{{ item.status }}</span>
+                    </div>
+                </a>
+                <div class="item-card-actions">
+                    <a href="/items/{{ item.id }}/edit" class="btn btn-small">{{ 'items.edit' | trans }}</a>
+                    <a href="/items/{{ item.id }}/deactivate" class="btn btn-small btn-danger">{{ 'items.deactivate' | trans }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if item_pagination.total > 12 %}
+        {% include 'base/pagination.html.twig' with {'pagination': item_pagination} %}
+        {% endif %}
+        {% else %}
+        <p class="no-results">{{ 'desktop.no_items_yet' | trans }} <a href="/items/create">{{ 'desktop.list_first' | trans }}</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

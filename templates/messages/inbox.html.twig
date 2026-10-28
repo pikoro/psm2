@@ -1,0 +1,48 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ 'messages.inbox' | trans }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <span class="current">{{ 'messages.inbox' | trans }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="messages-page">
+    <h2>{{ 'messages.inbox' | trans }}</h2>
+    {% if unread_count > 0 %}
+        <p class="unread-count">{{ unread_count }} {{ 'messages.unread' | trans }}</p>
+    {% endif %}
+    <a href="/messages/compose" class="btn btn-primary">{{ 'messages.compose' | trans }}</a>
+
+    {% if messages|length > 0 %}
+    <table class="messages-table">
+        <thead>
+            <tr>
+                <th>{{ 'messages.status' | trans }}</th>
+                <th>{{ 'messages.from' | trans }}</th>
+                <th>{{ 'messages.subject' | trans }}</th>
+                <th>{{ 'messages.date' | trans }}</th>
+                <th>{{ 'messages.actions' | trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <tr class="{{ msg.is_read ? 'read' : 'unread' }}">
+                <td>{{ msg.is_read ? '&mdash;' : '&#9679;'|raw }}</td>
+                <td><a href="/profile/{{ msg.from_user_id }}">{{ msg.sender_name }}</a></td>
+                <td><a href="/messages/{{ msg.id }}">{{ msg.subject|slice(0, 50) }}</a></td>
+                <td>{{ msg.created_at|date('M d, Y H:i') }}</td>
+                <td>
+                    <a href="/messages/{{ msg.id }}" class="btn btn-small">{{ 'messages.view' | trans }}</a>
+                    <a href="/messages/trash/{{ msg.id }}" class="btn btn-small btn-danger">{{ 'messages.delete' | trans }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'base/pagination.html.twig' %}
+    {% else %}
+    <p class="no-results">{{ 'messages.inbox_empty' | trans }}</p>
+    {% endif %}
+</div>
+{% endblock %}

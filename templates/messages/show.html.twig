@@ -1,0 +1,29 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - {{ message.subject }}{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/messages/inbox">Messages</a>
+    <span class="current">{{ message.subject|slice(0, 30) }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="message-detail">
+    <div class="message-header">
+        <h2>{{ message.subject }}</h2>
+        <p class="message-meta">
+            From: <a href="/profile/{{ message.from_user_id }}">{{ message.sender_name }}</a>
+            | To: <a href="/profile/{{ message.to_user_id }}">{{ message.receiver_name }}</a>
+            | {{ message.created_at|date('M d, Y H:i') }}
+        </p>
+    </div>
+    <div class="message-body">
+        {{ message.body|replace({'\n': '<br>'})|raw }}
+    </div>
+    <div class="message-actions">
+        <a href="/messages/reply/{{ message.id }}" class="btn btn-secondary">Reply</a>
+        <a href="/messages/trash/{{ message.id }}" class="btn btn-danger">Move to Trash</a>
+        <a href="/messages/inbox" class="btn btn-secondary">Back to Inbox</a>
+    </div>
+</div>
+{% endblock %}

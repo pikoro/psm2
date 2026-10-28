@@ -1,0 +1,56 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>{{ 'app.tagline' | trans }}</h1>
+    <div class="hero-actions">
+        <a href="/browse" class="btn btn-primary">{{ 'items.browse_items' | trans }}</a>
+        {% if not is_logged_in %}
+            <a href="/register" class="btn btn-secondary">{{ 'auth.join_now' | trans }}</a>
+        {% else %}
+            <a href="/items/create" class="btn btn-secondary">{{ 'items.list_new' | trans }}</a>
+        {% endif %}
+    </div>
+</section>
+
+{% if news is defined and news|length > 0 %}
+<section class="news-section">
+    <h2>Latest News</h2>
+    <div class="news-list">
+        {% for article in news %}
+        <article class="news-item">
+            <h3><a href="/admin/news#{{ article.id }}">{{ article.title }}</a></h3>
+            <time>{{ article.created_at|date('M d, Y') }}</time>
+            <p>{{ article.content|replace({'\n': '<br>'})|slice(0, 200) }}{% if article.content|length > 200 %}...{% endif %}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="featured-section">
+    <h2>Featured Items</h2>
+    <div class="item-grid">
+        {% for item in items %}
+        <div class="item-card">
+            <a href="/items/{{ item.id }}">
+                <div class="item-image">
+                    {% if item.main_photo %}
+                        <img src="/uploads/{{ item.main_photo }}" alt="{{ item.name }}" loading="lazy">
+                    {% else %}
+                        <div class="no-image">No Photo</div>
+                    {% endif %}
+                </div>
+                <div class="item-info">
+                    <h3>{{ item.name|slice(0, 40) }}{% if item.name|length > 40 %}...{% endif %}</h3>
+                    <p class="item-price">{{ item.price ? item.price ~ ' ' ~ item.currency : 'Free' }}</p>
+                    <span class="item-category">{{ item.category_name ?? 'Uncategorized' }}</span>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

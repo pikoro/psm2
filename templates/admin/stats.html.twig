@@ -1,0 +1,40 @@
+{% extends 'base/layout.html.twig' %}
+
+{% block title %} - Statistics{% endblock %}
+
+{% block breadcrumb_items %}
+    <a href="/admin">Admin</a>
+    <span class="current">Statistics</span>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <h2>Site Statistics</h2>
+    <div class="admin-stats-grid">
+        <div class="stat-card">
+            <h3>Users</h3>
+            <p class="stat-number">{{ total_users ?? 'N/A' }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Active Users</h3>
+            <p class="stat-number">{{ active_users ?? 'N/A' }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Items</h3>
+            <p class="stat-number">{{ total_items ?? 'N/A' }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Active Items</h3>
+            <p class="stat-number">{{ active_items ?? 'N/A' }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Feedback</h3>
+            <p class="stat-number">{{ total_feedback ?? 'N/A' }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Messages</h3>
+            <p class="stat-number">{{ total_messages ?? 'N/A' }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
